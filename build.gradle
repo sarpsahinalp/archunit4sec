@@ -13,6 +13,8 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'com.tngtech.archunit:archunit:1.3.0'
+    testImplementation("org.assertj:assertj-guava:3.25.1")
+    testImplementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
 }
 
 test {

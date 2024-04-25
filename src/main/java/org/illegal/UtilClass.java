@@ -10,8 +10,17 @@ public class UtilClass {
         try {
             method = Class.forName("java.lang.Runtime")
                     .getDeclaredMethod("getRuntime");
+            method.invoke(null);
         } catch (NoSuchMethodException | ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    public static void main(String[] args) {
+        getMethods();
     }
 }

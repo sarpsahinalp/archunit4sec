@@ -4,12 +4,14 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import de.tum.in.test.api.StrictTimeout;
 import org.junit.jupiter.api.Test;
 
 public class NetworkingTest {
 
+    @StrictTimeout(1000)
     @Test
-    public void noNetworkingTest() {
+    public void shouldNetworkingTest() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("org/sarps");
 
         ArchRule rule = ArchRuleDefinition.noClasses()
