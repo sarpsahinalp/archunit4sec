@@ -11,7 +11,7 @@ public class NetworkingTest {
 
     @StrictTimeout(1000)
     @Test
-    public void shouldNetworkingTest() {
+    void shouldNetworkingTest() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("org/sarps");
 
         ArchRule rule = ArchRuleDefinition.noClasses()

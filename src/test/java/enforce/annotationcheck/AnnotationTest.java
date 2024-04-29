@@ -1,29 +1,11 @@
-package enforce.reflection;
+package enforce.annotationcheck;
 
-import com.tngtech.archunit.base.DescribedPredicate;
-import com.tngtech.archunit.core.domain.AccessTarget;
-import com.tngtech.archunit.core.domain.JavaAccess;
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-class ReflectionTest {
-
-    @Test
-    void noReflectionTest() {
-        JavaClasses importedClasses = new ClassFileImporter()
-                .importPackages("org.sarps");
-        ArchRuleDefinition.classes()
-                .should()
-                .accessClassesThat()
-                .resideInAnyPackage("java.lang.reflect..")
-                .check(importedClasses);
-    }
+class AnnotationTest {
 
     @Test
     void shouldHaveStrictTimeOut() {
