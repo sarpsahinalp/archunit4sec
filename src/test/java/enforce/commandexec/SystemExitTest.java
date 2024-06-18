@@ -4,12 +4,14 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 class SystemExitTest {
 
     // TODO needs improvement can use Regex to identify the method name
     @Test
+    @Order(-1)
     void shouldNotCallSystemExit() {
         JavaClasses importedClasses = new ClassFileImporter()
                 .importPackages("org.sarps");
