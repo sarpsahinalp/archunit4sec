@@ -6,6 +6,6 @@ import org.illegal.UtilClass;
 public class ReflectionExample {
 
     public static void main(String[] args) {
-        Illegal.call();
+        UtilClass.getMethods();
     }
 }

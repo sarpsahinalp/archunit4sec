@@ -1,9 +1,19 @@
 package enforce.reflection;
 
+import com.tngtech.archunit.core.domain.JavaAccess;
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
  import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import com.tngtech.archunit.thirdparty.com.google.common.collect.ImmutableCollection;
+import com.tngtech.archunit.thirdparty.com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static ch.qos.logback.classic.pattern.Util.match;
 
 public class ReflectionTest {
 
@@ -11,7 +21,7 @@ public class ReflectionTest {
     void noReflectionTest() {
         JavaClasses importedClasses = new ClassFileImporter()
                 .importPackages("org.sarps");
-        ArchRuleDefinition.classes()
+        ArchRuleDefinition.noClasses()
                 .should()
                 .accessClassesThat()
                 .resideInAnyPackage("java.lang.reflect..")
@@ -20,15 +30,21 @@ public class ReflectionTest {
 
     @Test
     void shouldHaveStrictTimeOut() {
-        JavaClasses importedClasses = new ClassFileImporter()
-                .importPackages("enforce.network");
+        ClassFileImporter importer = new ClassFileImporter();
         // check if every test has the annotation test with a name of should
 
-        ArchRuleDefinition.methods()
-                .that().haveName("should.*")
-                .should().beAnnotatedWith("de.tum.in.test.api.StrictTimeout")
-                .andShould().haveRawReturnType("void")
-                .allowEmptyShould(true)
-                .check(importedClasses);
+
+        // TODO recursively check if any of the other classes are using reflection
+
+
+        ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage("org.sarps")
+                .should()
+                .transitivelyDependOnClassesThat()
+                .resideInAPackage("java.lang.reflect..")
+                .check(importer.importPackages("org.sarps"));
     }
+
+
 }

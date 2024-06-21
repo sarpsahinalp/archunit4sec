@@ -6,3 +6,5 @@ might be good, this is also how we configure most of the stuff at work
 -> I would suggest a Map structure where we have the identifiers of
 certain ArchRules, also make BaseArchRules to make the definition of
 rules easier, make them customizable
+* Create a way to detect all transitive dependencies of a project
+-> What is a way????
