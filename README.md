@@ -20,3 +20,46 @@ ArchManagerTest is the main test class that contains all the security tests. The
 - Prevents modifying management
 - Prevents utilising AWT
 
+Example of a test:
+* ```java
+	@ArchTest
+    void checkGWTAccess(JavaClasses classes) {
+        ArchRuleDefinition.noClasses()
+                .should()
+                .onlyAccessClassesThat()
+                .containAnyCodeUnitsThat(new DescribedPredicate<>("GWT access") {
+                    @Override
+                    public boolean test(JavaCodeUnit javaCodeUnit) {
+                        System.out.println(javaCodeUnit.getFullName());
+                        return false;
+                    }
+                })
+                .orShould(new ArchCondition<>("GWT access") {
+                    @Override
+                    public void check(JavaClass item, ConditionEvents events) {
+                        System.out.println(events);
+                        System.out.println(item);
+                        events.add(SimpleConditionEvent.violated(item, "GWT access"));
+                    }
+                })
+                .check(classes);
+
+        Architectures.LayeredArchitecture layers = Architectures
+                .layeredArchitecture()
+                .consideringAllDependencies()
+                .layer("Client")
+                .definedBy("..client..")
+                .layer("Shared")
+                .definedBy("..shared..");
+
+        ArchRule rule = layers.whereLayer("Client")
+                .mayOnlyAccessLayers("Shared", "DomDtos", "DomBase", "DomConfig")
+                .ignoreDependency(
+                        DescribedPredicate.alwaysTrue(),
+                        JavaClass.Predicates.resideOutsideOfPackages("com.myapp.svc..")
+                );
+
+        rule.check(classes);
+    }
+```
+

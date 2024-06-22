@@ -1,20 +1,13 @@
 package arch.rules;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tngtech.archunit.base.DescribedPredicate;
-import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaCodeUnit;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
-import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.lang.ConditionEvents;
-import com.tngtech.archunit.lang.SimpleConditionEvent;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
-import com.tngtech.archunit.library.Architectures;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -39,15 +32,17 @@ import java.nio.file.Path;
 class ArchManagerTest {
 
     public static JavaClasses classes;
+    public static ArchitecturalTestProperties properties;
 
     @BeforeAll
-    static void init() {
+    static void init() throws IOException {
         classes = new ClassFileImporter().importPackages("de.tum.cit.ase");
+        properties = parseJsonFile("src/test/java/arch/rules/conf.json");
     }
 
     @Test
     // Might be useful to have a test that checks if the configuration is correct
-    @DisabledIf("arch.rules.ConfigurationParser#preventNetworkConnections")
+    @DisabledIf("preventNetworkAccess")
     void preventUnrestrictedAccessToFileSystem() {
         ArchRuleDefinition.noClasses().should().transitivelyDependOnClassesThat().resideInAnyPackage("java.io.File", "java.nio.file").because("Access to the file system is not allowed")
                 .check(classes);
@@ -104,55 +99,12 @@ class ArchManagerTest {
     public static final ArchRule preventAWT = ArchRuleDefinition.noClasses().should().transitivelyDependOnClassesThat()
             .resideInAnyPackage("java.awt", "javax.swing").because("Utilizing AWT should be restricted for security reasons");
 
-    @ArchTest
-    void checkGWTAccess(JavaClasses classes) {
-        ArchRuleDefinition.noClasses()
-                .should()
-                .onlyAccessClassesThat()
-                .containAnyCodeUnitsThat(new DescribedPredicate<>("GWT access") {
-                    @Override
-                    public boolean test(JavaCodeUnit javaCodeUnit) {
-                        System.out.println(javaCodeUnit.getFullName());
-                        return false;
-                    }
-                })
-                .orShould(new ArchCondition<>("GWT access") {
-                    @Override
-                    public void check(JavaClass item, ConditionEvents events) {
-                        System.out.println(events);
-                        System.out.println(item);
-                        events.add(SimpleConditionEvent.violated(item, "GWT access"));
-                    }
-                })
-                .check(classes);
-
-        Architectures.LayeredArchitecture layers = Architectures
-                .layeredArchitecture()
-                .consideringAllDependencies()
-                .layer("Client")
-                .definedBy("..client..")
-                .layer("Shared")
-                .definedBy("..shared..");
-
-//        ArchRule rule = layers.whereLayer("Client")
-//                .mayOnlyAccessLayers("Shared", "DomDtos", "DomBase", "DomConfig")
-//                .ignoreDependency(
-//                        DescribedPredicate.alwaysTrue(),
-//                        JavaClass.Predicates.resideOutsideOfPackages("com.myapp.svc..")
-//                );
-//
-//        rule.check(classes);
-    }
-}
-
-class ConfigurationParser {
-
     public static ArchitecturalTestProperties parseJsonFile(String filePath) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(Path.of(filePath).toFile(), ArchitecturalTestProperties.class);
     }
 
-    public static boolean preventNetworkConnections() throws IOException {
-        return !parseJsonFile("src/test/java/arch/rules/conf.json").networkAccess();
+    static boolean preventNetworkAccess() {
+        return properties.networkAccess();
     }
 }
