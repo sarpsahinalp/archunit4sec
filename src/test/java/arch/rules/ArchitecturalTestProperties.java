@@ -1,3 +1,5 @@
+package arch.rules;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
