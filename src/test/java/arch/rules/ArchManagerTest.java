@@ -8,6 +8,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import com.tngtech.archunit.library.Architectures;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -46,6 +47,17 @@ class ArchManagerTest {
     void preventUnrestrictedAccessToFileSystem() {
         ArchRuleDefinition.noClasses().should().transitivelyDependOnClassesThat().resideInAnyPackage("java.io.File", "java.nio.file").because("Access to the file system is not allowed")
                 .check(classes);
+    }
+
+    @Test
+    void testPreventUnrestrictedAccessToFileSystem() {
+        Architectures.
+                layeredArchitecture()
+                .consideringAllDependencies()
+                .layer("files")
+                .definedBy("java.io.File", "java.nio.file")
+                .whereLayer("student")
+                .mayNotBeAccessedByAnyLayer();
     }
 
 
@@ -96,6 +108,7 @@ class ArchManagerTest {
                 .resideInAnyPackage("java.awt", "javax.swing").because("Utilizing AWT should be restricted for security reasons")
                 .check(classes);
     }
+
     public static final ArchRule preventAWT = ArchRuleDefinition.noClasses().should().transitivelyDependOnClassesThat()
             .resideInAnyPackage("java.awt", "javax.swing").because("Utilizing AWT should be restricted for security reasons");
 

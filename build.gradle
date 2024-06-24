@@ -1,6 +1,9 @@
 plugins {
     id 'java'
+    id "io.freefair.aspectj" version "8.6"
+//    id "io.freefair.aspectj.post-compile-weaving" version "8.6"
 }
+
 
 group = 'sarps'
 version = '1.0-SNAPSHOT'
@@ -20,6 +23,8 @@ dependencies {
     implementation 'org.junit.platform:junit-platform-suite-engine:1.11.0-M2'
     testImplementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
     testImplementation("org.junit-pioneer:junit-pioneer:2.2.0")
+    implementation 'org.aspectj:aspectjrt:1.9.20.1'
+//    compileOnly 'org.aspectj:aspectjweaver:1.9.7'
 }
 
 // define src dir
