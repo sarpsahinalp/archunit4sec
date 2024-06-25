@@ -3,6 +3,7 @@ package de.tum.cit.ase.aspectj;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
@@ -77,5 +78,6 @@ public class HelloWorld {
         } catch (java.io.IOException e) {
             System.out.println("IO Exception");
         }
+        RandomAccessFile file = new RandomAccessFile("test.txt", "rw");
     }
 }

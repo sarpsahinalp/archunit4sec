@@ -4,12 +4,15 @@ import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.tngtech.archunit.lang.ArchCondition;
+import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import testenv.archconditions.TransitiveDependencyConditionExcluding;
+import testenv.archconditions.TransitivelyAccessesClassesConditionExcluding;
 
 import java.io.*;
 import java.util.Set;
@@ -25,7 +28,7 @@ public class CallLogTest {
     }
 
     @Test
-    void testCallLog() {
+    void testTransitiveDependencies() {
         // recursively check for dependencies with custom condition
         ArchRuleDefinition.noClasses()
                 .should(new TransitiveDependencyConditionExcluding(new DescribedPredicate<>("asd") {
@@ -35,6 +38,19 @@ public class CallLogTest {
                     }
                 }, Set.of(Object.class.getName(), String.class.getName(), System.class.getName())))
                 .check(classes);
+    }
 
+    @Test
+    void testTransitiveAccesses() {
+        ArchRuleDefinition.noClasses()
+                .should(new ArchCondition<>("transitively access classes") {
+                    @Override
+                    public void check(JavaClass item, ConditionEvents events) {
+                        System.out.println(item.getName());
+                        item.getAccessesFromSelf()
+                                .forEach(access -> System.out.println(access.getTarget().getOwner().getAllAccessesFromSelf()));
+                    }
+                })
+                .check(classes);
     }
 }
