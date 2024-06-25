@@ -12,9 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import testenv.archconditions.TransitiveDependencyConditionExcluding;
-import testenv.archconditions.TransitivelyAccessesClassesConditionExcluding;
 
 import java.io.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.constant.Constable;
+import java.lang.constant.ConstantDesc;
 import java.util.Set;
 
 public class CallLogTest {
@@ -31,12 +35,12 @@ public class CallLogTest {
     void testTransitiveDependencies() {
         // recursively check for dependencies with custom condition
         ArchRuleDefinition.noClasses()
-                .should(new TransitiveDependencyConditionExcluding(new DescribedPredicate<>("asd") {
+                .should(new TransitiveDependencyConditionExcluding(new DescribedPredicate<>("depend on File class") {
                     @Override
                     public boolean test(JavaClass javaClass) {
                         return javaClass.getName().equals(File.class.getName());
                     }
-                }, Set.of(Object.class.getName(), String.class.getName(), System.class.getName())))
+                }, Set.of()))
                 .check(classes);
     }
 

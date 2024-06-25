@@ -9,7 +9,11 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.spi.FileSystemProvider;
+import java.nio.file.spi.FileTypeDetector;
 import java.util.Scanner;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
 public class HelloWorld {
 
@@ -79,5 +83,13 @@ public class HelloWorld {
             System.out.println("IO Exception");
         }
         RandomAccessFile file = new RandomAccessFile("test.txt", "rw");
+
+        JarInputStream inputStream = new JarInputStream(new FileInputStream("test.jar"));
+
+        JarOutputStream jos = new JarOutputStream(fos);
+
+        FileSystemProvider provider = FileSystemProvider.installedProviders().get(0);
+
+        FileTypeDetector detector = null;
     }
 }

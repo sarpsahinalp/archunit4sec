@@ -74,7 +74,8 @@ public final class TransitiveDependencyConditionExcluding extends ArchCondition<
     private Set<JavaClass> getDirectDependencyTargetsOutsideOfAnalyzedClasses(JavaClass item) {
         return item.getDirectDependenciesFromSelf().stream()
                 .map(dependency -> dependency.getTargetClass().getBaseComponentType())
-                .filter(targetClass -> !allClasses.contains(targetClass))
+                .filter(targetClass -> !allClasses.contains(targetClass) && !targetClass.getName().startsWith("java.lang.annotation")
+                        && !targetClass.getName().startsWith("java.lang") && !targetClass.getName().startsWith("jdk.internal.vm.annotation"))
                 .collect(toSet());
     }
 
