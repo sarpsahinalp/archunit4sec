@@ -18,3 +18,9 @@
 * [ ] Prevents unallowed usage of classloader
 * [ ] Prevents unallowed definitions in packages
 * [ ] Prevents unallowed package access
+
+System exit calls!!!
+```java
+JavaMethodCall{origin=JavaMethod{java.lang.System.exit(int)}, target=target{java.lang.Runtime.exit(int)}, lineNumber=1864}
+JavaMethodCall{origin=JavaMethod{java.lang.System.exit(int)}, target=target{java.lang.Runtime.getRuntime()}, lineNumber=1864}
+```
