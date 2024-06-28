@@ -7,14 +7,11 @@ import com.tngtech.archunit.core.importer.resolvers.ClassResolver;
 import com.tngtech.archunit.core.importer.resolvers.ClassResolverFromClasspath;
 
 import java.net.URL;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 public class CustomClassResolver implements ClassResolver {
     private final ClassFileImporter classFileImporter = new ClassFileImporter();
     private final ClassResolverFromClasspath defaultResolver = new ClassResolverFromClasspath();
-    private final Set<String> alreadyTried = new HashSet<>();
 
     @Override
     public void setClassUriImporter(ClassUriImporter classUriImporter) {
@@ -23,7 +20,15 @@ public class CustomClassResolver implements ClassResolver {
 
     @Override
     public Optional<JavaClass> tryResolve(String typeName) {
-        return Optional.empty();
+        return defaultResolver.tryResolve(typeName);
+//        if (typeName.startsWith("de.tum.cit.ase")) {
+//            return defaultResolver.tryResolve(typeName);
+//        }
+
+//        if (!typeName.startsWith("java.lang") && !typeName.startsWith("java.io") && !typeName.startsWith("java.util") && !typeName.startsWith("java.nio")) {
+//            return Optional.empty();
+//        }
+//
 //        try {
 //            ArchConfiguration.get().setClassResolver(ClassResolverFromClasspath.class);
 //            URL url = getClass().getResource("/" + typeName.replace(".", "/") + ".class");
