@@ -41,13 +41,13 @@ sourceSets {
     }
 }
 
-//tasks.withType(JavaCompile).configureEach {
-//    options.forkOptions.jvmArgs = ['-Xmx4g']
-//}
-//
-//tasks.withType(Test).configureEach {
-//    maxHeapSize = "1g"
-//}
+tasks.withType(JavaCompile).configureEach {
+    options.forkOptions.jvmArgs = ['-Xmx4g']
+}
+
+tasks.withType(Test).configureEach {
+    maxHeapSize = "4g"
+}
 
 
 test {
