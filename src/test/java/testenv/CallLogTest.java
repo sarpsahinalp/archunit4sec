@@ -129,14 +129,28 @@ public class CallLogTest {
      */
     @Test
     void testTransitiveAccessesMethods() {
-        JavaClasses classes = new ClassFileImporter().importPackages("java.io", "jdk.internal", "sun.nio", "sun.awt", "sun.print", "java.util.prefs", "sun.security", "de.tum.cit.ase.aspectj.println");
+//        JavaClasses classes = new ClassFileImporter().importPackages(
+//                "..");
+        JavaClasses classes = new ClassFileImporter().importPackages(
+                "java.io",
+                "java.nio.file",
+                "jdk.internal",
+                "sun.nio",
+                "sun.awt",
+                "sun.print",
+                "java.util.prefs",
+                "java.util.zip",
+                "java.util.jar",
+                "java.security",
+                "sun.security",
+                "de.tum.cit.ase.aspectj.println");
         ArchRuleDefinition
                 .noClasses()
                 .that()
                 .resideInAnyPackage("de.tum.cit.ase.aspectj.println")
                 .should(new TransitivelyAccessesMethodsCondition(new DescribedPredicate<>("access File class") {
             @Override
-            public boolean test(JavaCodeUnitAccess<?> javaClass) {
+            public boolean test(JavaAccess<?> javaClass) {
                 return javaClass.getTarget().getFullName().equals("java.io.FileOutputStream.open0(java.lang.String, boolean)");
             }
         })).check(classes);
