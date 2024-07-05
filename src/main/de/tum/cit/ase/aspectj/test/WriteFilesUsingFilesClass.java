@@ -12,7 +12,7 @@ public class WriteFilesUsingFilesClass {
         String filePath = "fileUsingFilesClass.txt";
 
         try {
-            Files.write(Paths.get(filePath), Arrays.asList("Hello, World!"), StandardOpenOption.CREATE);
+            Files.createFile(Paths.get(filePath));
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             e.printStackTrace();
