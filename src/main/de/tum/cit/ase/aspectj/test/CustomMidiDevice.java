@@ -1,7 +1,6 @@
-package de.tum.cit.ase.aspectj;
+package de.tum.cit.ase.aspectj.test;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiDevice.Info;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.MidiUnavailableException;

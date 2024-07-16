@@ -8,10 +8,6 @@ public class Printer {
 
     public static void main(String[] args) throws FileNotFoundException {
 //        FileOutputStream fileStream = new FileOutputStream("test.txt");
-
-        PrintStream fileStream = new PrintStream(new FileOutputStream("test.txt"));
-
-        System.setOut(fileStream);
-        System.out.println("Hello, World!");
+        System.out.println("Hello, AspectJ!");
     }
 }

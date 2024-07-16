@@ -6,11 +6,12 @@ import java.io.IOException;
 
 public class OpenFileUsingDesktopClass {
     public static void main(String[] args) {
-        String filePath = "fileUsingFileWriter.txt";
+        String filePath = "/home/sarps/IdeaProjects/archunit4sec/fileInputOutputStream.txt";
         File file = new File(filePath);
 
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
+            desktop.setOpenFileHandler((f) -> System.out.println("Opening file: " + f));
             try {
                 desktop.open(file);
                 System.out.println("Opened the file with the default application.");

@@ -1,4 +1,4 @@
-package de.tum.cit.ase.aspectj;
+package de.tum.cit.ase.aspectj.test;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;

@@ -3,6 +3,7 @@ package de.tum.cit.ase.aspectj.analyzer;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaAccess;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaConstructor;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvent;
 import com.tngtech.archunit.lang.ConditionEvents;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 import static com.tngtech.archunit.lang.ConditionEvent.createMessage;
 import static com.tngtech.archunit.thirdparty.com.google.common.base.Preconditions.checkNotNull;
+import static com.tngtech.archunit.thirdparty.com.google.common.collect.Iterables.getFirst;
 import static com.tngtech.archunit.thirdparty.com.google.common.collect.Iterables.getLast;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
@@ -22,21 +24,12 @@ import static java.util.stream.Collectors.toSet;
 /**
  * Checks that a class transitively accesses methods that match a given predicate.
  */
-public class TransitivelyAccessesMethodsCondition extends ArchCondition<JavaClass> {
+public class TransitivelyGetsAccessedFromCondition extends ArchCondition<JavaClass> {
 
     private final DescribedPredicate<? super JavaAccess<?>> conditionPredicate;
     private final TransitiveAccessPath transitiveAccessPath = new TransitiveAccessPath();
 
-    private final Set<String> classNamesToExclude = Set.of(
-            "java.lang.Object",
-            "java.lang.String",
-            "java.lang.StringBuffer",
-            "java.lang.NullPointerException",
-            "java.util.TimeZone",
-            "java.util.SimpleTimeZone"
-    );
-
-    public TransitivelyAccessesMethodsCondition(DescribedPredicate<? super JavaAccess<?>> conditionPredicate) {
+    public TransitivelyGetsAccessedFromCondition(DescribedPredicate<? super JavaAccess<?>> conditionPredicate) {
         super("transitively depend on classes that " + conditionPredicate.getDescription());
 
         this.conditionPredicate = checkNotNull(conditionPredicate);
@@ -45,10 +38,11 @@ public class TransitivelyAccessesMethodsCondition extends ArchCondition<JavaClas
     @Override
     public void check(JavaClass item, ConditionEvents events) {
         boolean hastTransitiveAccess = false;
-        for (JavaAccess<?> target : item.getAccessesFromSelf()) {
+        JavaConstructor constructor = item.getConstructor(String.class, String.class);
+        for (JavaAccess<?> target : constructor.getAccessesToSelf()) {
             List<JavaAccess<?>> dependencyPath = transitiveAccessPath.findPathTo(target);
             if (!dependencyPath.isEmpty()) {
-                events.add(newTransitiveAccessPathFoundEvent(target, dependencyPath));
+                events.add(newTransitiveAccessPathFoundEvent(getFirst(dependencyPath, null), dependencyPath));
                 hastTransitiveAccess = true;
             }
         }
@@ -73,10 +67,8 @@ public class TransitivelyAccessesMethodsCondition extends ArchCondition<JavaClas
         return SimpleConditionEvent.violated(javaClass, createMessage(javaClass, "does not transitively depend on any matching class"));
     }
 
-    private Set<JavaAccess<?>> getDirectAccessTargetsOutsideOfAnalyzedClasses(JavaAccess<?> item) {
-        return item.getTargetOwner().getAccessesFromSelf()
-                        .stream()
-                        .filter(a -> a.getOrigin().getFullName().equals(item.getTarget().getFullName())).collect(toSet());
+    private Set<? extends JavaAccess<?>> getDirectAccessTargetsOutsideOfAnalyzedClasses(JavaAccess<?> item) {
+        return item.getOrigin().getAccessesToSelf();
     }
 
     private class TransitiveAccessPath {
@@ -86,7 +78,7 @@ public class TransitivelyAccessesMethodsCondition extends ArchCondition<JavaClas
         List<JavaAccess<?>> findPathTo(JavaAccess<?> method) {
             ImmutableList.Builder<JavaAccess<?>> transitivePath = ImmutableList.builder();
             addAccessesToPathFrom(method, transitivePath, new HashSet<>());
-            return transitivePath.build().reverse();
+            return transitivePath.build();
         }
 
         private boolean addAccessesToPathFrom(
@@ -94,10 +86,6 @@ public class TransitivelyAccessesMethodsCondition extends ArchCondition<JavaClas
                 ImmutableList.Builder<JavaAccess<?>> transitivePath,
                 Set<String> analyzedMethods
         ) {
-            if (classNamesToExclude.stream().anyMatch(method.getTargetOwner().getFullName()::equals)) {
-                return false;
-            }
-
             if (conditionPredicate.test(method)) {
                 transitivePath.add(method);
                 return true;

@@ -7,6 +7,8 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.Stopwatch;
 import testenv.archconditions.TransitiveDependencyConditionExcluding;
@@ -93,5 +95,9 @@ public class CallLogTest {
                 .should(noTransitiveAccessToFiles)
                 .check(javaClasses);
 
+    }
+
+    @BeforeAll
+    static void setup() {
     }
 }

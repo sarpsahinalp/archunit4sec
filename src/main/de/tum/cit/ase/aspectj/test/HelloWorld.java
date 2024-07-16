@@ -1,4 +1,4 @@
-package de.tum.cit.ase.aspectj;
+package de.tum.cit.ase.aspectj.test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

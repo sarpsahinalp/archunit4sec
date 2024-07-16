@@ -1,4 +1,4 @@
-package de.tum.cit.ase.aspectj;
+package de.tum.cit.ase.aspectj.test;
 
 import javax.sound.midi.*;
 import javax.sound.midi.spi.SoundbankReader;
