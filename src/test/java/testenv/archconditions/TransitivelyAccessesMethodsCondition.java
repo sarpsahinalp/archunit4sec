@@ -35,8 +35,7 @@ public class TransitivelyAccessesMethodsCondition extends ArchCondition<JavaClas
 
     @Override
     public void check(JavaClass item, ConditionEvents events) {
-        boolean hastTransitiveAccess = false;
-        for (JavaAccess<?> target : item.getCodeUnitAccessesFromSelf()) {
+        boolean hastTransitiveAccess = false;for (JavaAccess<?> target : item.getCodeUnitAccessesFromSelf()) {
             List<JavaAccess<?>> dependencyPath = transitiveAccessPath.findPathTo(target);
             if (!dependencyPath.isEmpty()) {
                 events.add(newTransitiveAccessPathFoundEvent(target, dependencyPath));
