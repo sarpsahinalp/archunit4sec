@@ -1,4 +1,4 @@
-package testenv.archconditions;
+package de.tum.rules.testenv.archconditions;
 
 import com.tngtech.archunit.ArchConfiguration;
 import com.tngtech.archunit.core.domain.JavaClass;

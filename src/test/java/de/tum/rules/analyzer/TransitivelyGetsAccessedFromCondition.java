@@ -1,4 +1,4 @@
-package de.tum.cit.ase.aspectj.analyzer;
+package de.tum.rules.analyzer;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaAccess;
