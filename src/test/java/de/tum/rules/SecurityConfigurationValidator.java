@@ -1,4 +1,4 @@
-package arch.rules;
+package de.tum.rules;
 
 public class SecurityConfigurationValidator {
 }

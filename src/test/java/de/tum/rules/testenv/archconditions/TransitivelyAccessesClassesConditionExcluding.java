@@ -1,4 +1,4 @@
-package testenv.archconditions;
+package de.tum.rules.testenv.archconditions;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -19,14 +19,15 @@ import static com.tngtech.archunit.thirdparty.com.google.common.collect.Iterable
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
 
-public final class TransitiveDependencyConditionExcluding extends ArchCondition<JavaClass> {
+// TODO accesses of java library classes are not considered so it does not work correctly
+public final class TransitivelyAccessesClassesConditionExcluding extends ArchCondition<JavaClass> {
 
     private final DescribedPredicate<? super JavaClass> conditionPredicate;
-    private final TransitiveDependencyConditionExcluding.TransitiveDependencyPath transitiveDependencyPath = new TransitiveDependencyConditionExcluding.TransitiveDependencyPath();
+    private final TransitivelyAccessesClassesConditionExcluding.TransitiveAccessPath transitiveAccessPath = new TransitivelyAccessesClassesConditionExcluding.TransitiveAccessPath();
     private Collection<JavaClass> allClasses;
     private final Set<String> excludedClasses;
 
-    public TransitiveDependencyConditionExcluding(DescribedPredicate<? super JavaClass> conditionPredicate, Set<String> excludedClasses) {
+    public TransitivelyAccessesClassesConditionExcluding(DescribedPredicate<? super JavaClass> conditionPredicate, Set<String> excludedClasses) {
         super("transitively depend on classes that " + conditionPredicate.getDescription());
 
         this.conditionPredicate = checkNotNull(conditionPredicate);
@@ -41,12 +42,12 @@ public final class TransitiveDependencyConditionExcluding extends ArchCondition<
     @Override
     public void check(JavaClass javaClass, ConditionEvents events) {
         boolean hasTransitiveDependency = false;
-        for (JavaClass target : getDirectDependencyTargetsOutsideOfAnalyzedClasses(javaClass)) {
-            List<JavaClass> dependencyPath = transitiveDependencyPath.findPathTo(target).stream()
+        for (JavaClass target : getDirectAccessTargetsOutsideOfAnalyzedClasses(javaClass)) {
+            List<JavaClass> accessPath = transitiveAccessPath.findPathTo(target).stream()
                     .filter(j -> !excludedClasses.contains(j.getName()))
                     .toList();
-            if (!dependencyPath.isEmpty()) {
-                events.add(newTransitiveDependencyPathFoundEvent(javaClass, dependencyPath));
+            if (!accessPath.isEmpty()) {
+                events.add(newTransitiveAccessPathFoundEvent(javaClass, accessPath));
                 hasTransitiveDependency = true;
             }
         }
@@ -55,13 +56,13 @@ public final class TransitiveDependencyConditionExcluding extends ArchCondition<
         }
     }
 
-    private static ConditionEvent newTransitiveDependencyPathFoundEvent(JavaClass javaClass, List<JavaClass> transitiveDependencyPath) {
+    private static ConditionEvent newTransitiveAccessPathFoundEvent(JavaClass javaClass, List<JavaClass> transitiveAccessPath) {
         String message = String.format("%sdepends on <%s>",
-                transitiveDependencyPath.size() > 1 ? "transitively " : "",
-                getLast(transitiveDependencyPath).getFullName());
+                transitiveAccessPath.size() > 1 ? "transitively " : "",
+                getLast(transitiveAccessPath).getFullName());
 
-        if (transitiveDependencyPath.size() > 1) {
-            message += " by [" + transitiveDependencyPath.stream().map(JavaClass::getName).collect(joining("->")) + "]";
+        if (transitiveAccessPath.size() > 1) {
+            message += " by [" + transitiveAccessPath.stream().map(JavaClass::getName).collect(joining("->")) + "]";
         }
 
         return SimpleConditionEvent.satisfied(javaClass, createMessage(javaClass, message));
@@ -71,15 +72,14 @@ public final class TransitiveDependencyConditionExcluding extends ArchCondition<
         return SimpleConditionEvent.violated(javaClass, createMessage(javaClass, "does not transitively depend on any matching class"));
     }
 
-    private Set<JavaClass> getDirectDependencyTargetsOutsideOfAnalyzedClasses(JavaClass item) {
-        return item.getDirectDependenciesFromSelf().stream()
-                .map(dependency -> dependency.getTargetClass().getBaseComponentType())
-                .filter(targetClass -> !allClasses.contains(targetClass) && !targetClass.getName().startsWith("java.lang.annotation")
-                        && !targetClass.getName().startsWith("java.lang") && !targetClass.getName().startsWith("jdk.internal.vm.annotation"))
+    private Set<JavaClass> getDirectAccessTargetsOutsideOfAnalyzedClasses(JavaClass item) {
+        return item.getAccessesFromSelf().stream()
+                .map(access -> access.getTarget().getOwner().getBaseComponentType())
+                .filter(targetClass -> !allClasses.contains(targetClass))
                 .collect(toSet());
     }
 
-    private class TransitiveDependencyPath {
+    private class TransitiveAccessPath {
         /**
          * @return some outgoing transitive dependency path to the supplied class or empty if there is none
          */
@@ -101,7 +101,7 @@ public final class TransitiveDependencyConditionExcluding extends ArchCondition<
 
             analyzedClasses.add(clazz);
 
-            for (JavaClass directDependency : getDirectDependencyTargetsOutsideOfAnalyzedClasses(clazz)) {
+            for (JavaClass directDependency : getDirectAccessTargetsOutsideOfAnalyzedClasses(clazz)) {
                 if (!analyzedClasses.contains(directDependency)
                         && addDependenciesToPathFrom(directDependency, dependencyPath, analyzedClasses)) {
                     dependencyPath.add(clazz);
