@@ -94,5 +94,8 @@ TO BAN AT ALL TIMES:
 * java.lang.ProcessBuilder.start([Ljava.lang.ProcessBuilder$Redirect;)
 * reflection
 
+PERMISSIONS:
+- getenv
+
 
 
