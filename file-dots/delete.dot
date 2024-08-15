@@ -1,0 +1,15 @@
+strict digraph G {
+  1 [ label="java.awt.Desktop.moveToTrash(java.io.File)" ];
+  2 [ label="java.lang.SecurityManager.checkDelete(java.lang.String)" ];
+  3 [ label="java.io.File.delete()" ];
+  4 [ label="java.io.File.deleteOnExit()" ];
+  5 [ label="java.util.zip.ZipFile.<init>(java.io.File, int, java.nio.charset.Charset)" ];
+  6 [ label="sun.nio.fs.UnixChannelFactory.open(int, sun.nio.fs.UnixPath, java.lang.String, sun.nio.fs.UnixChannelFactory$Flags, int)" ];
+  7 [ label="sun.nio.fs.UnixPath.checkDelete()" ];
+  1 -> 2;
+  3 -> 2;
+  4 -> 2;
+  5 -> 2;
+  6 -> 2;
+  7 -> 2;
+}

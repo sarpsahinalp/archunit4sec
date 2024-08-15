@@ -17,24 +17,23 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     implementation 'com.tngtech.archunit:archunit:1.3.0'
 //    testImplementation("org.assertj:assertj-guava:3.25.1")
-//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
-//    implementation 'org.junit.platform:junit-platform-suite-api:1.11.0-M2'
-//    implementation 'org.junit.platform:junit-platform-suite-engine:1.11.0-M2'
-//    testImplementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
-//    testImplementation("org.junit-pioneer:junit-pioneer:2.2.0")
-//    testImplementation 'org.slf4j:slf4j-simple:2.0.13'
-//    implementation name: 'ares-2.0.0-SNAPSHOT'
-//    implementation 'org.jgrapht:jgrapht-core:1.5.2'
-//    implementation 'org.aspectj:aspectjrt:1.9.22.1'
-//    implementation 'org.aspectj:aspectjweaver:1.9.22.1'
-//    implementation "org.soot-oss:sootup.core:1.3.0"
-//    implementation "org.soot-oss:sootup.java.core:1.3.0"
-//    implementation "org.soot-oss:sootup.java.bytecode:1.3.0"
-//    implementation "org.soot-oss:sootup.jimple.parser:1.3.0"
-//    implementation "org.soot-oss:sootup.callgraph:1.3.0"
-//    implementation "org.soot-oss:sootup.analysis:1.3.0"
-//    implementation "org.soot-oss:sootup.qilin:1.3.0"
-//    implementation 'org.jgrapht:jgrapht-io:1.5.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+    implementation 'org.junit.platform:junit-platform-suite-api:1.11.0-M2'
+    implementation 'org.junit.platform:junit-platform-suite-engine:1.11.0-M2'
+    testImplementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
+    testImplementation("org.junit-pioneer:junit-pioneer:2.2.0")
+    testImplementation 'org.slf4j:slf4j-simple:2.0.13'
+    implementation 'org.jgrapht:jgrapht-core:1.5.2'
+    implementation 'org.aspectj:aspectjrt:1.9.22.1'
+    implementation 'org.aspectj:aspectjweaver:1.9.22.1'
+    implementation "org.soot-oss:sootup.core:1.3.0"
+    implementation "org.soot-oss:sootup.java.core:1.3.0"
+    implementation "org.soot-oss:sootup.java.bytecode:1.3.0"
+    implementation "org.soot-oss:sootup.jimple.parser:1.3.0"
+    implementation "org.soot-oss:sootup.callgraph:1.3.0"
+    implementation "org.soot-oss:sootup.analysis:1.3.0"
+    implementation "org.soot-oss:sootup.qilin:1.3.0"
+    implementation 'org.jgrapht:jgrapht-io:1.5.2'
 }
 
 // define src dir
