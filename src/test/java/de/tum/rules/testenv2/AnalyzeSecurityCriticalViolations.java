@@ -1,9 +1,7 @@
 package de.tum.rules.testenv2;
 
-import com.sun.tools.attach.VirtualMachine;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
@@ -16,29 +14,29 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AnalyzeSecurityCriticalViolations {
 
     public static void main(String[] args) throws IOException {
-        withEverything(args);
+        withSuperclasses(args);
     }
 
     public static void withSuperclasses(String[] args) {
         JavaClasses classes = new ClassFileImporter().importClasspath();
 
-        JavaClass filePermission = classes.get("java.io.UnixFileSystem");
+        JavaClass filePermission = classes.get("java.lang.SecurityManager");
 
         filePermission.getAccessesToSelf().stream()
-                .filter(access -> access.getTarget().getFullName().startsWith("sun.nio.fs.WindowsPath.checkRead()"))
+                .filter(access -> access.getTarget().getFullName().startsWith("java.lang.SecurityManager.checkRead"))
                 .map(access -> access.getTarget().getFullName() + " ----> " + access.getOrigin().getFullName())
                 .distinct()
                 .sorted()
                 .forEach(System.out::println);
 
         filePermission.getAccessesToSelf().stream()
-                .filter(access -> access.getTarget().getFullName().equals("sun.nio.fs.WindowsFileSystem.getRootDirectories()"))
+                .filter(access -> access.getTarget().getFullName().equals("java.lang.SecurityManager.checkRead"))
                 .flatMap(access -> access.getTargetOwner().getAllRawSuperclasses()
                         .stream()
                         .filter(superclass -> superclass.getAllSubclasses().size() <= 20)
@@ -50,19 +48,25 @@ public class AnalyzeSecurityCriticalViolations {
     }
 
     public static void withEverything(String[] args) throws IOException {
+//        Neo4jDriver driver = new Neo4jDriver("neo4j+s://6f125562.databases.neo4j.io", "neo4j", "NdCd-os00qFeuV_NtQ1mAFn7aU2KF1xL-zGXBathOcY");
+
         JavaClasses classes = new ClassFileImporter()
                 .withImportOption(location -> location.contains("jrt"))
                 .importClasspath();
 
-        JavaClass filePermission = classes.get("java.io.WindowsNativeDispatcher");
+        List<String> methods = Files.readAllLines(Path.of("test.txt"));
 
-        Queue<JavaAccess<?>> frontier = filePermission.getAccessesToSelf()
-                .stream()
-                .filter(access -> access.getTarget().getFullName().startsWith("java.io.WinNTFileSystem.delete0(java.io.File)"))
-                .distinct()
-                .collect(Collectors.toCollection(LinkedList::new));
+        Queue<JavaAccess<?>> frontier = new LinkedList<>();
+
+        for (JavaClass javaClass : classes) {
+            frontier.addAll(javaClass.getMethodCallsToSelf().stream()
+                    .filter(javaAccess -> methods.contains(javaAccess.getTarget().getFullName()))
+                    .toList());
+        }
 
         Set<String> visitedMethods = new HashSet<>();
+
+
 
         while (!frontier.isEmpty()) {
             System.out.println(frontier.size());
@@ -74,15 +78,8 @@ public class AnalyzeSecurityCriticalViolations {
             visitedMethods.add(access.getOrigin().getFullName());
             String originName = access.getOrigin().getFullName() + "\n";
             if (isOriginOwnerPublicAndOriginPublic(access)) {
-                // write to file
-                Files.write(Path.of("filesystems1.csv"), originName.getBytes(), java.nio.file.StandardOpenOption.APPEND);
+                Files.write(Path.of("methods.csv"), originName.getBytes(), StandardOpenOption.APPEND);
             }
-
-            frontier.addAll(access.getOriginOwner().getAllRawSuperclasses().stream()
-                    .filter(superclass -> superclass.getAllSubclasses().size() <= 20)
-                    .flatMap(javaClass -> javaClass.getAccessesToSelf().stream())
-                    .filter(access1 -> access1.getTarget().getFullName().substring(access1.getTargetOwner().getFullName().length()).equals(access.getOrigin().getFullName().substring(access.getOriginOwner().getFullName().length())))
-                    .toList());
 
             frontier.addAll(access.getOrigin().getAccessesToSelf());
         }
