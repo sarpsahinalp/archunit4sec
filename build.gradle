@@ -13,16 +13,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
-    testImplementation 'com.tngtech.archunit:archunit:1.3.0'
-    testImplementation("org.assertj:assertj-guava:3.25.1")
+    implementation platform('org.junit:junit-bom:5.10.0')
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+    implementation 'com.tngtech.archunit:archunit:1.3.0'
+    implementation("org.assertj:assertj-guava:3.25.1")
 //    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
 //    implementation 'org.junit.platform:junit-platform-suite-api:1.11.0-M2'
 //    implementation 'org.junit.platform:junit-platform-suite-engine:1.11.0-M2'
-//    testImplementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
-    testImplementation("org.junit-pioneer:junit-pioneer:2.2.0")
-    testImplementation 'org.slf4j:slf4j-simple:2.0.13'
+//    implementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
+    implementation("org.junit-pioneer:junit-pioneer:2.2.0")
+    implementation 'org.slf4j:slf4j-simple:2.0.13'
     implementation 'org.aspectj:aspectjrt:1.9.22.1'
     implementation 'org.aspectj:aspectjweaver:1.9.22.1'
 }
