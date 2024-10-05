@@ -46,7 +46,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.withType(Test).configureEach {
-    maxHeapSize = "4g"
+    maxHeapSize = "8g"
 }
 
 
