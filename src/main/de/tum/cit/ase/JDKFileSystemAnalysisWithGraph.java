@@ -4,12 +4,15 @@ import sootup.callgraph.CallGraph;
 import sootup.callgraph.CallGraphAlgorithm;
 import sootup.callgraph.RapidTypeAnalysisAlgorithm;
 import sootup.core.inputlocation.AnalysisInputLocation;
-import sootup.java.bytecode.frontend.inputlocation.JavaClassPathAnalysisInputLocation;
-import sootup.java.bytecode.frontend.inputlocation.JrtFileSystemAnalysisInputLocation;
+import sootup.java.bytecode.inputlocation.JavaClassPathAnalysisInputLocation;
+import sootup.java.bytecode.inputlocation.JrtFileSystemAnalysisInputLocation;
+import sootup.java.core.JavaSootMethod;
 import sootup.java.core.views.JavaView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class JDKFileSystemAnalysisWithGraph {
 
@@ -25,6 +28,6 @@ public class JDKFileSystemAnalysisWithGraph {
         CallGraphAlgorithm rta = new RapidTypeAnalysisAlgorithm(view);
 
         // initialize the callgraph with the fileinput stream
-        CallGraph cg = rta.initialize(List.of(view.getIdentifierFactory().getMethodSignature("java.io.FileInputStream", "<init>", "void", List.of("java.lang.String"))));
+        CallGraph cg = rta.initialize(Collections.singletonList(view.getIdentifierFactory().getMethodSignature("de.tum.cit.ase.Student", "accessFileSystem", "void", List.of())));
     }
 }

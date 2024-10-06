@@ -1,0 +1,43 @@
+Andersen's context-insensitive analysis
+- Time: 52968ms
+- Found methods: 7918
+
+k-callsite-sensitive pointer analysis (denoted kCFA)
+k=1
+- Time: 87621ms
+- Found methods: 7811
+
+k=2
+- Time: More than 30 minutes
+- Found methods:
+
+MAHJONG-guided kCFA.
+k=1
+- Time: 72145ms
+- Found methods: 7811
+
+k=2
+- Time: 129755ms
+- Found methods: 7768
+
+Data-driven 2CFA.
+- Time: 59432ms
+- Found methods: 7902
+
+ZIPPER-guided kCFA.
+k=1
+- Time: 124566ms
+- Found methods: 7811
+
+k=2
+- Time: 363219ms
+- Found methods: 7768
+
+SELECTX-guided kCFA.
+k=1
+- Time: 112491ms
+- Found methods: 7811
+
+k=2
+- Time: 195811ms
+- Found methods: 7773

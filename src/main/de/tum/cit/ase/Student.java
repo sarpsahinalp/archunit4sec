@@ -1,14 +1,17 @@
 package de.tum.cit.ase;
 
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.Paths;
 
 public class Student {
 
-    public static void main(String[] args) throws FileNotFoundException {
-        accessFileSystem();
+    static void access() throws FileNotFoundException {
+        new FileOutputStream("test.txt");
     }
 
-    static void accessFileSystem() throws FileNotFoundException {
-        Student2.main(new String[0]);
+    static void accessFileSystem() throws IOException {
+        String path1 = "test.";
+        String path2 = "txt";
+        Paths.get(path1 + path2).getFileSystem().provider().createDirectory(Paths.get("test"));
     }
 }
