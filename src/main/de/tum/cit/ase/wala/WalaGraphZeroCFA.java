@@ -1,22 +1,26 @@
-package de.tum.cit.ase;
+package de.tum.cit.ase.wala;
 
 import com.ibm.wala.classLoader.Language;
 import com.ibm.wala.core.util.config.AnalysisScopeReader;
 import com.ibm.wala.ipa.callgraph.*;
+import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.callgraph.propagation.InstanceKey;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
-import com.ibm.wala.util.NullProgressMonitor;
+import com.ibm.wala.types.ClassLoaderReference;
+import com.ibm.wala.types.MethodReference;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-public class WalaGraph {
+public class WalaGraphZeroCFA {
 
     public static void main(String[] args) throws ClassHierarchyException, CallGraphBuilderCancelException, IOException {
         // Create an AnalysisScope for the Java 21 JRT modules
@@ -26,18 +30,31 @@ public class WalaGraph {
         // Build the class hierarchy
         ClassHierarchy cha = ClassHierarchyFactory.make(scope);
 
-        // Create AnalysisOptions for call graph
-        AnalysisOptions options = new AnalysisOptions(scope, null);
+        List<Entrypoint> customEntryPoints = new ArrayList<>();
 
-        // Set entry points (optional): Customize as per your requirement
-        Iterable<Entrypoint> entryPoints = Util.makeMainEntrypoints(cha);
-        options.setEntrypoints(entryPoints);
+        MethodReference methodToAnalyze = MethodReference.findOrCreate(
+                ClassLoaderReference.Application,
+                "Lde/tum/cit/ase/Student",  // Class name (with slashes)
+                "accessFileSystem",         // Method name
+                "()V"                       // Method signature: void return type, no parameters
+        );
+
+        customEntryPoints.add(new DefaultEntrypoint(methodToAnalyze, cha));
+
+        // Create AnalysisOptions for call graph
+        AnalysisOptions options = new AnalysisOptions(scope, customEntryPoints);
+
 
         // Create call graph builder (n-CFA, context-sensitive, etc.)
         CallGraphBuilder<InstanceKey> builder = Util.makeZeroCFABuilder(Language.JAVA, options, new AnalysisCacheImpl(), cha);
 
+        System.out.println("Building call graph...");
+        long startTime = System.currentTimeMillis();
         // Generate the call graph
         CallGraph callGraph = builder.makeCallGraph(options, null);
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Call graph built in " + (endTime - startTime) + "ms");
 
         // Write the call graph to a DOT file
         String dotFilePath = "callgraph.dot";
