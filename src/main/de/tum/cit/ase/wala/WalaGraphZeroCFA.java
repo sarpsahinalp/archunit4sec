@@ -16,16 +16,16 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class WalaGraphZeroCFA {
 
     public static void main(String[] args) throws ClassHierarchyException, CallGraphBuilderCancelException, IOException {
         // Create an AnalysisScope for the Java 21 JRT modules
         AnalysisScope.createJavaAnalysisScope();
-        AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope("/home/sarps/IdeaProjects/archunit4sec/build/classes/java/main/de/tum/cit/ase", new File("/home/sarps/IdeaProjects/archunit4sec/src/main/de/tum/cit/ase/Exclusions.txt"));
+        // get entire classpath of the project
+        String classpath = System.getProperty("java.class.path");
+        AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, new File("C:\\Users\\sarps\\IdeaProjects\\archunit4sec\\src\\main\\de\\tum\\cit\\ase\\Exclusions.txt"));
 
         // Build the class hierarchy
         ClassHierarchy cha = ClassHierarchyFactory.make(scope);
@@ -39,7 +39,14 @@ public class WalaGraphZeroCFA {
                 "()V"                       // Method signature: void return type, no parameters
         );
 
-        customEntryPoints.add(new DefaultEntrypoint(methodToAnalyze, cha));
+        MethodReference methodToAnalyze2 = MethodReference.findOrCreate(
+                ClassLoaderReference.Primordial,
+                "Ljava/io/FileInputStream",  // Class name (with slashes)
+                "<init>",         // Method name
+                "(Ljava/io/File;)V"                       // Method signature: void return type, no parameters
+        );
+
+        customEntryPoints.add(new DefaultEntrypoint(methodToAnalyze2, cha));
 
         // Create AnalysisOptions for call graph
         AnalysisOptions options = new AnalysisOptions(scope, customEntryPoints);

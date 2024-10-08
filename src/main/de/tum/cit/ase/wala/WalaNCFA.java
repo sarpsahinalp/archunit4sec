@@ -14,14 +14,18 @@ import com.ibm.wala.types.MethodReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static de.tum.cit.ase.wala.WalaGraphZeroCFA.writeCallGraphToDot;
 
 public class WalaNCFA {
 
     public static void main(String[] args) throws ClassHierarchyException, CallGraphBuilderCancelException, IOException {
-        AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope("/home/sarps/IdeaProjects/archunit4sec/build/classes/java/main/de/tum/cit/ase", new File("/home/sarps/IdeaProjects/archunit4sec/src/main/de/tum/cit/ase/Exclusions.txt"));
+        // get entire classpath of the project
+        String classpath = System.getProperty("java.class.path");
+        AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, new File("C:\\Users\\sarps\\IdeaProjects\\archunit4sec\\src\\main\\de\\tum\\cit\\ase\\Exclusions.txt"));
 
         // Build the class hierarchy
         ClassHierarchy cha = ClassHierarchyFactory.make(scope);
@@ -54,5 +58,9 @@ public class WalaNCFA {
         // Write the call graph to a DOT file
         String dotFilePath = "callgraph-n-cfa.dot";
         writeCallGraphToDot(callGraph, dotFilePath);
+
+        MethodReference filePermission = MethodReference.findOrCreate(ClassLoaderReference.Application, "Ljava/io/FilePermission", "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+
+
     }
 }
