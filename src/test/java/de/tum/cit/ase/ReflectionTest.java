@@ -1,8 +1,8 @@
-package test;
+package de.tum.cit.ase;
 
 import de.tum.cit.ase.ares.api.jupiter.PublicTest;
 
-public class Something {
+public class ReflectionTest {
 
     @PublicTest
     void testReflection() {

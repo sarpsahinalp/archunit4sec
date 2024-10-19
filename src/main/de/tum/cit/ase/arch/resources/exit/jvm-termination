@@ -1,0 +1,10 @@
+java.lang.SecurityManager.checkExit(int)
+    java.awt.Desktop.checkQuitPermission()
+        java.awt.Desktop.enableSuddenTermination()
+        java.awt.Desktop.setQuitHandler(java.awt.desktop.QuitHandler)
+        java.awt.Desktop.setQuitStrategy(java.awt.desktop.QuitStrategy)
+        java.awt.Desktop.disableSuddenTermination()
+
+    java.lang.Runtime.halt(int)
+    java.lang.Runtime.exit(int)
+    javax.swing.JFrame.setDefaultCloseOperation(int)

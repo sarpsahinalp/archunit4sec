@@ -1,0 +1,87 @@
+jdk.internal.net.http.ResponseBodyHandlers$FileDownloadBodyHandler.create(java.nio.file.Path, java.util.List)
+    java.net.http.HttpResponse$BodyHandlers.ofFileDownload(java.nio.file.Path, [Ljava.nio.file.OpenOption;)
+
+java.awt.Desktop.checkRead()
+    java.awt.Desktop.setOpenFileHandler(java.awt.desktop.OpenFilesHandler)
+
+java.lang.SecurityManager.checkRead(java.io.FileDescriptor)
+    java.io.FileInputStream.<init>(java.io.FileDescriptor)
+    jdk.nio.Channels.readWriteSelectableChannel(java.io.FileDescriptor, jdk.nio.Channels$SelectableChannelCloser)
+
+java.lang.SecurityManager.checkRead(java.lang.String, java.lang.Object)
+    --
+
+java.lang.SecurityManager.checkRead(java.lang.String)
+    com.sun.jmx.remote.security.HashedPasswordManager.loadPasswords()
+    java.io.File.canRead()
+    java.io.File.exists()
+    java.io.File.getTotalSpace()
+    java.io.File.isHidden()
+    java.io.File.getUsableSpace()
+    java.io.File.lastModified()
+    java.io.File.isDirectory()
+    java.io.File.length()
+    java.io.File.isFile()
+    java.io.File.normalizedList()
+    java.io.File.getFreeSpace()
+    java.io.FileInputStream.<init>(java.io.File)
+    java.io.RandomAccessFile.<init>(java.io.File, java.lang.String, boolean)
+    java.io.UnixFileSystem.listRoots()
+    java.lang.ProcessBuilder.start([Ljava.lang.ProcessBuilder$Redirect;)
+    java.util.zip.ZipFile.<init>(java.io.File, int, java.nio.charset.Charset)
+    jdk.internal.loader.URLClassPath.check(java.net.URL)
+    sun.awt.SunToolkit.checkPermissions(java.lang.String)
+    sun.awt.image.FileImageSource.<init>(java.lang.String)
+    sun.awt.shell.ShellFolderManager.checkFile(java.io.File, java.lang.SecurityManager)
+    sun.net.httpserver.simpleserver.FileServerHandler.<init>(java.nio.file.Path, java.util.function.UnaryOperator)
+    sun.net.www.protocol.jar.JarFileFactory.getCachedJarFile(java.net.URL)
+    sun.nio.fs.AbstractUserDefinedFileAttributeView.checkAccess(java.lang.String, boolean, boolean)
+    sun.nio.fs.UnixChannelFactory.open(int, sun.nio.fs.UnixPath, java.lang.String, sun.nio.fs.UnixChannelFactory$Flags, int)
+    sun.nio.fs.UnixFileSystem$1.iterator()
+    sun.nio.fs.UnixFileSystem$FileStoreIterator.readNext()
+    sun.nio.fs.UnixPath.checkRead()
+
+java.net.URLClassLoader.getPermissions(java.security.CodeSource)
+    sun.jvm.hotspot.SALauncherLoader.getPermissions(java.security.CodeSource)
+    sun.rmi.server.LoaderHandler$Loader.getPermissions(java.security.CodeSource)
+
+javax.imageio.ImageIO.hasCachePermission()
+    javax.imageio.ImageIO.createImageInputStream(java.lang.Object)
+    javax.imageio.ImageIO.createImageOutputStream(java.lang.Object)
+
+jdk.internal.loader.Loader.getPermissions(java.security.CodeSource)
+    -- none --
+
+jdk.internal.net.http.RequestPublishers$FilePublisher.create(java.nio.file.Path)
+    java.net.http.HttpRequest$BodyPublishers.ofFile(java.nio.file.Path)
+
+sun.awt.datatransfer.DataTransferer.isForbiddenToRead(java.io.File, java.security.ProtectionDomain)
+    sun.awt.datatransfer.DataTransferer.removeSuspectedData(java.awt.datatransfer.DataFlavor, java.awt.datatransfer.Transferable, java.lang.String)
+    sun.awt.datatransfer.DataTransferer.castToFiles(java.util.List, java.security.ProtectionDomain)
+
+sun.net.www.protocol.file.FileURLConnection.getPermission()
+    -- none --
+
+sun.nio.fs.UnixFileSystemProvider.readSymbolicLink(java.nio.file.Path)
+    -- none --
+
+sun.print.PrintJob2D.throwPrintToFile
+    sun.print.PrintJob2D.initPrintJob2D(java.awt.Frame, java.lang.String, java.awt.JobAttributes, java.awt.PageAttributes)
+
+sun.print.RasterPrinterJob.throwPrintToFile()
+    sun.print.RasterPrinterJob.checkAllowedToPrintToFile()
+
+sun.print.ServiceDialog$PrintServicePanel.throwPrintToFile()
+    sun.print.ServiceDialog$PrintServicePanel.allowedToPrintToFile()
+
+sun.rmi.server.LoaderHandler.addPermissionsForURLs([Ljava.net.URL;, java.security.PermissionCollection, boolean)
+    -- none --
+
+sun.security.krb5.Config.loadConfigFile(java.lang.String)
+    -- none --
+
+sun.security.util.LazyCodeSourcePermissionCollection.ensureAdded()
+    sun.security.util.LazyCodeSourcePermissionCollection.toString()
+    sun.security.util.LazyCodeSourcePermissionCollection.elements()
+    sun.security.util.LazyCodeSourcePermissionCollection.writeReplace()
+    sun.security.util.LazyCodeSourcePermissionCollection.implies(java.security.Permission)

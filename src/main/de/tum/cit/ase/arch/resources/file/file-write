@@ -1,0 +1,56 @@
+jdk.internal.net.http.ResponseBodyHandlers$FileDownloadBodyHandler.create(java.nio.file.Path, java.util.List)
+    java.net.http.HttpResponse$BodyHandlers.ofFileDownload(java.nio.file.Path, [Ljava.nio.file.OpenOption;)
+
+jdk.internal.net.http.ResponseBodyHandlers$PathBodyHandler.create(java.nio.file.Path, java.util.List)
+    java.net.http.HttpResponse$BodyHandlers.ofFile(java.nio.file.Path, [Ljava.nio.file.OpenOption;)
+
+jdk.internal.net.http.ResponseSubscribers$PathSubscriber.create(java.nio.file.Path, java.util.List)
+    java.net.http.HttpResponse$BodySubscribers.ofFile(java.nio.file.Path, [Ljava.nio.file.OpenOption;)
+
+java.awt.Desktop.checkExec()
+    java.awt.Desktop.setOpenURIHandler(java.awt.desktop.OpenURIHandler)
+    java.awt.Desktop.setOpenFileHandler(java.awt.desktop.OpenFilesHandler)
+    java.awt.Desktop.mail(java.net.URI)
+    java.awt.Desktop.print(java.io.File)
+    java.awt.Desktop.browse(java.net.URI)
+    java.awt.Desktop.openHelpViewer()
+    java.awt.Desktop.browseFileDirectory(java.io.File)
+    java.awt.Desktop.open(java.io.File)
+    java.awt.Desktop.edit(java.io.File)
+    java.awt.Desktop.mail()
+
+java.lang.SecurityManager.checkWrite(java.lang.String)
+    com.sun.management.internal.HotSpotDiagnostic.dumpHeap(java.lang.String, boolean)
+    java.io.File.setLastModified(long)
+    java.io.File.canWrite()
+    java.io.File.createNewFile()
+    java.io.File.createTempFile(java.lang.String, java.lang.String, java.io.File)
+    java.io.File.setExecutable(boolean, boolean)
+    java.io.File.setWritable(boolean, boolean)
+    java.io.File.mkdir()
+    java.io.File.renameTo(java.io.File)
+    java.io.File.setReadOnly()
+    java.io.File.setReadable(boolean, boolean)
+    java.io.FileOutputStream.<init>(java.io.File, boolean)
+    java.io.RandomAccessFile.<init>(java.io.File, java.lang.String, boolean)
+    sun.nio.fs.AbstractUserDefinedFileAttributeView.checkAccess(java.lang.String, boolean, boolean)
+    sun.nio.fs.UnixChannelFactory.open(int, sun.nio.fs.UnixPath, java.lang.String, sun.nio.fs.UnixChannelFactory$Flags, int)
+    sun.nio.fs.UnixPath.checkWrite()
+    sun.print.UnixPrintJob.getAttributeValues(javax.print.DocFlavor)
+
+java.lang.SecurityManager.checkWrite(java.io.FileDescriptor)
+    java.io.FileOutputStream.<init>(java.io.FileDescriptor)
+    jdk.nio.Channels.readWriteSelectableChannel(java.io.FileDescriptor, jdk.nio.Channels$SelectableChannelCloser)
+
+javax.imageio.ImageIO.hasCachePermission()
+    javax.imageio.ImageIO.createImageInputStream(java.lang.Object)
+    javax.imageio.ImageIO.createImageOutputStream(java.lang.Object)
+
+sun.print.PrintJob2D.throwPrintToFile
+    sun.print.PrintJob2D.initPrintJob2D(java.awt.Frame, java.lang.String, java.awt.JobAttributes, java.awt.PageAttributes)
+
+sun.print.RasterPrinterJob.throwPrintToFile()
+    sun.print.RasterPrinterJob.checkAllowedToPrintToFile()
+
+sun.print.ServiceDialog$PrintServicePanel.throwPrintToFile()
+    sun.print.ServiceDialog$PrintServicePanel.allowedToPrintToFile()
