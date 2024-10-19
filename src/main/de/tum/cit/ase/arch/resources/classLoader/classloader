@@ -1,1 +1,16 @@
 ClassLoader.checkClassLoaderPermission
+
+SecurityConstants.CREATE_CLASSLOADER_PERMISSION
+    ModuleLayer.checkCreateClassLoaderPermission
+    SecurityManager.checkCreateClassLoader
+
+SecurityConstants.GET_CLASSLOADER_PERMISSION
+    Class
+    ClassLoader
+    ModuleLayer
+    Module
+    MethodHandles
+    MethodType
+    Proxy
+    ResourceBundle
+    Executors

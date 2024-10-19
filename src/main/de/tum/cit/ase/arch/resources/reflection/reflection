@@ -3,3 +3,17 @@ java.lang.reflect.AccessibleObject
   public void setAccessible(...)
 
 jdk.internal.reflect.Reflection
+
+
+SecurityConstants.CHECK_MEMBER_ACCESS_PERMISSION
+    Class.checkMemberAccess(...)
+    MethodHandles.checkSecurityManager(...)
+    ReflectUtil.conservativeCheckMemberAccess(...)
+    Class.getProtectionDomain()
+
+SecurityConstants.ACCESS_PERMISSION
+    MethodHandles.privateLookupIn(...)
+    MethodHandles.reflectAs(...)
+
+SecurityConstants.REFLECTION_FACTORY_ACCESS_PERMISSION
+    ReflectionFactory.getReflectionFactory()

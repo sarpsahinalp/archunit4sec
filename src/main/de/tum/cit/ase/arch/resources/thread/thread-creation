@@ -1,0 +1,17 @@
+SecurityConstant.SUBCLASS_IMPLEMENTATION_PERMISSION --> enable override of context class loader
+    Thread(ThreadGroup g, String name, int characteristics, Runnable task, long stackSize, AccessControlContext acc)
+    ThreadBuilders.unstarted
+    ThreadBuilders.newThread
+
+SecurityConstant.GET_STACK_TRACE_PERMISSION
+    Thread.getStackTrace()
+    Thread.getAllStackTraces()
+
+SecurityConstant.MODIFY_THREADGROUP_PERMISSION
+    SecurityManager.checkAccess(ThreadGroup g)
+    Thread.getAllStackTraces()
+    ThreadGroupUtils.getRootThreadGroup()
+    MarlinUtils.getThreadGroup()
+
+SecurityConstant.MODIFY_THREAD_PERMISSION
+    SecurityManager.checkAccess(Thread t)

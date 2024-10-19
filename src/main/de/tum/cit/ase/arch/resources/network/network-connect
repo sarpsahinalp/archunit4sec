@@ -1,2 +1,4 @@
 java.net.URLClassLoader.getPermissions(java.security.CodeSource)
 sun.rmi.server.LoaderHandler.addPermissionsForURLs([Ljava.net.URL;, java.security.PermissionCollection, boolean)
+
+SecurityManager.checkConnect(java.net.SocketImpl)

@@ -1,0 +1,9 @@
+ServerSocket.checkPermission()
+Socket.checkPermission(SocketImpl)
+ResponseCache.getDefault()
+ResponseCache.setDefault(ResponseCache)
+CookieHandler.getDefault()
+CookieHandler.setDefault(CookieHandler)
+ProxySelector.getDefault()
+ProxySelector.setDefault(ProxySelector)
+URL.checkSpecifyHandler(URLStreamHandler) --> URL constructor
