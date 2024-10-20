@@ -1,5 +1,6 @@
 package de.tum.cit.ase.arch;
 
+import com.android.dx.rop.cst.CstString;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
@@ -9,10 +10,48 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DetectMethodsViaCha {
 
     public static void main(String[] args) throws IOException {
+        analyzeNetwork();
+    }
+
+    private static void analyzeNetwork() throws IOException {
+        JavaClasses classes = new ClassFileImporter()
+                .withImportOption(location -> location.contains("jrt"))
+                .importClasspath();
+
+        // write this list to the file reflect_methods.txt
+        Files.writeString(Path.of("networks.txt"), classes.getPackage("sun.net.httpserver").getClasses().stream().map(javaClass -> javaClass.getAccessesToSelf().stream().filter(DetectMethodsViaCha::isOriginOwnerPublicAndOriginPublic)
+                .map(javaAccess -> javaAccess.getOrigin().getFullName()).reduce("", (s, s2) -> s + s2 + "\n")).collect(Collectors.joining()));
+
+    }
+
+    private static void analyzeThreads() throws IOException {
+        JavaClasses classes = new ClassFileImporter()
+                .withImportOption(location -> location.contains("jrt"))
+                .importClasspath();
+
+        // write this list to the file reflect_methods.txt
+        Files.writeString(Path.of("thread_methods.txt"), classes.get("java.lang.Thread").getAccessesToSelf().stream().filter(DetectMethodsViaCha::isOriginOwnerPublicAndOriginPublic)
+                .map(javaAccess -> javaAccess.getOrigin().getFullName()).reduce("", (s, s2) -> s + s2 + "\n"));
+    }
+
+    private static void analyzeReflection() throws IOException {
+        JavaClasses classes = new ClassFileImporter()
+                .withImportOption(location -> location.contains("jrt"))
+                .importClasspath();
+
+        // write this list to the file reflect_methods.txt
+        Files.writeString(Path.of("reflect_methods.txt"), classes.getPackage("jdk.internal.reflect").getClasses().stream().map(javaClass -> javaClass.getAccessesToSelf().stream().filter(DetectMethodsViaCha::isOriginOwnerPublicAndOriginPublic)
+                .map(javaAccess -> javaAccess.getOrigin().getFullName()).reduce("", (s, s2) -> s + s2 + "\n")).collect(Collectors.joining()));
+
+
+    }
+
+    private static void analyzeFileAccess() throws IOException {
         // do a breadth-first search to find all methods that access FilePermission
         // for each method
         JavaClasses classes = new ClassFileImporter()
@@ -34,7 +73,7 @@ public class DetectMethodsViaCha {
             }
             visitedMethods.add(access.getOrigin().getFullName());
             if (isOriginOwnerPublicAndOriginPublic(access)) {
-                Files.write(Path.of("public_methods.txt"), (access.getOrigin().getFullName() + "\n").getBytes(), StandardOpenOption.APPEND);
+                Files.write(Path.of("reflect_methods.txt"), (access.getOrigin().getFullName() + "\n").getBytes(), StandardOpenOption.APPEND);
             }
 
             frontier.addAll(access.getOriginOwner().getAllRawSuperclasses().stream()

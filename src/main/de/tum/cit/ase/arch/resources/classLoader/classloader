@@ -14,3 +14,7 @@ SecurityConstants.GET_CLASSLOADER_PERMISSION
     Proxy
     ResourceBundle
     Executors
+
+getResources()
+getResourceAsStream()
+etc.

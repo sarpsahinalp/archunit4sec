@@ -10,8 +10,8 @@ public class DetectDirectMethods {
 
     public static void main(String[] args) {
         detectDirectMethodsFromSourceTarget(
-                "",
-                ReflectPermission.class.getName());
+                "sun.nio.fs.WindowsFileSystemProvider.checkAccess(java.nio.file.Path, [Ljava.nio.file.AccessMode;)",
+                "sun.nio.fs.WindowsFileSystemProvider");
     }
 
     public static void detectDirectMethodsFromSourceTarget(String targetMethod, String targetClassName) {

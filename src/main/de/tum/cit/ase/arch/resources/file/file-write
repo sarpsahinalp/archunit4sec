@@ -34,6 +34,23 @@ java.lang.SecurityManager.checkWrite(java.lang.String)
     java.io.FileOutputStream.<init>(java.io.File, boolean)
     java.io.RandomAccessFile.<init>(java.io.File, java.lang.String, boolean)
     sun.nio.fs.AbstractUserDefinedFileAttributeView.checkAccess(java.lang.String, boolean, boolean)
+    sun.nio.fs.WindowsChannelFactory.open(java.lang.String, java.lang.String, sun.nio.fs.WindowsChannelFactory$Flags, long)
+        sun.nio.fs.WindowsFileSystemProvider
+            java.nio.channels.FileChannel
+
+    sun.nio.fs.WindowsPath.checkWrite()
+        sun.nio.fs.WindowsFileAttributeViews$Basic.setTimes(java.nio.file.attribute.FileTime, java.nio.file.attribute.FileTime, java.nio.file.attribute.FileTime)
+        sun.nio.fs.WindowsFileAttributeViews$Dos.updateAttributes(int, boolean)
+        sun.nio.fs.WindowsFileCopy.copy(sun.nio.fs.WindowsPath, sun.nio.fs.WindowsPath, [Ljava.nio.file.CopyOption;)
+        sun.nio.fs.WindowsFileCopy.move(sun.nio.fs.WindowsPath, sun.nio.fs.WindowsPath, [Ljava.nio.file.CopyOption;)
+        sun.nio.fs.WindowsFileSystemProvider.checkAccess(java.nio.file.Path, [Ljava.nio.file.AccessMode;)
+        sun.nio.fs.WindowsFileSystemProvider.createSymbolicLink(java.nio.file.Path, java.nio.file.Path, [Ljava.nio.file.attribute.FileAttribute;)
+        sun.nio.fs.WindowsFileSystemProvider.createDirectory(java.nio.file.Path, [Ljava.nio.file.attribute.FileAttribute;)
+        sun.nio.fs.WindowsFileSystemProvider.createLink(java.nio.file.Path, java.nio.file.Path)
+        sun.nio.fs.WindowsAclFileAttributeView.checkAccess(sun.nio.fs.WindowsPath, boolean, boolean)
+            sun.nio.fs.WindowsFileSystemProvider
+
+    sun.print.Win32PrintJob.getAttributeValues(javax.print.DocFlavor)
     sun.nio.fs.UnixChannelFactory.open(int, sun.nio.fs.UnixPath, java.lang.String, sun.nio.fs.UnixChannelFactory$Flags, int)
     sun.nio.fs.UnixPath.checkWrite()
     sun.print.UnixPrintJob.getAttributeValues(javax.print.DocFlavor)
